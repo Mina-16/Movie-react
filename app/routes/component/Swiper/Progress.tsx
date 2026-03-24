@@ -32,14 +32,17 @@ const Progress = ({
     <>
       <div
         className={`
-        flex
+        hidden
+        lg:flex
         ${flex ? "flex" : "flex-col"}
         ${itemEnd ? "items-end" : "items-cnter"}
         ${justifyEnd ? "justify-end" : "justify-center"}
         gap-${gap} 
         absolute 
         inset-0 
-        mr-30 
+        mr-10
+        mb-15
+        xl:mr-30 
         mb-10
         `}
       >

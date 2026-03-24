@@ -22,7 +22,7 @@ const ViweSwiper = ({ mapName, mapLink, cProgress, start, end }: Props) => {
     <div>
       <SwiperCard
         classProgress={cProgress}
-        className="h-[100vh]"
+        className="xl:h-[100vh]"
         paginationImages
         items={mapName.map((movie) => ({
           card: (
@@ -36,7 +36,7 @@ const ViweSwiper = ({ mapName, mapLink, cProgress, start, end }: Props) => {
               {/* المحتوى فوق الصورة */}
               <div className="absolute inset-0 z-20 flex items-center pb-50">
                 <CardInfo
-                  btnClasses="bg-red-500 mt-20 hover:bg-red-400"
+                  btnClasses="hidden bg-red-500 mt-20 hover:bg-red-400"
                   logo={movie.logo}
                   map={movies}
                 />

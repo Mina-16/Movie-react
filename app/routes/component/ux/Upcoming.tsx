@@ -36,11 +36,11 @@ const Upcoming = ({ map }: { map: Movie[] }) => {
   };
 
   return (
-    <Box sx={{ p: 8 }}>
+    <Box sx={{px: 6}}>
       <ClientOnly>
         {() => (
           <Suspense fallback={<CircularProgress />}>
-            <Carousel autoPlay infinite responsive={responsive}>
+            <Carousel autoPlay infinite responsive={responsive} className="m-0 p-0">
               {map.map((movie) => (
                 <Box key={movie.id} sx={{ backgroundColor: "black", mt: 2 }}>
                   <Link to={`/movie/${movie.id}`}>
@@ -49,6 +49,7 @@ const Upcoming = ({ map }: { map: Movie[] }) => {
                         backgroundColor: "black",
                         p: 1,
                         borderRadius: 2,
+                      
                         transition: "0.3s",
                         "&:hover": {
                           transform: "scale(1.05)",

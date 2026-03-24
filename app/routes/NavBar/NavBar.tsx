@@ -2,7 +2,6 @@ import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -17,22 +16,14 @@ const Search = styled("div")(({ theme }) => ({
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
-  height: "100%",
   position: "absolute",
-  pointerEvents: "none",
+  height: "100%",
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -40,7 +31,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
@@ -54,75 +44,122 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NavBar() {
   const [searchTerm, setsearchTerm] = useState("");
+  const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
+
   const handleSearchSubmit = (event) => {
-    if (event.key == "Enter" && searchTerm.trim() !== "") {
+    if (event.key === "Enter" && searchTerm.trim() !== "") {
       navigate(`/search?q=${searchTerm}`);
+      setOpenMenu(false);
     }
   };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position="absolute"
-        sx={{
-          zIndex: 1000,
-          background: "none",
-        }}
-      >
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <div>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
-              Movies
-            </Typography>
-          </div>
-          <div>
+      <AppBar position="absolute" sx={{ zIndex: 1000, background: "none" }}>
+        <Toolbar className="flex justify-between">
+
+          {/* Logo */}
+          <Typography
+            variant="h6"
+            className="text-white hidden sm:block"
+          >
+            Movies
+          </Typography>
+
+          {/* Links - Desktop */}
+          <div className="hidden md:block">
             <ul className="flex gap-4 p-0 m-0">
               <li>
-                <Link
-                  to={"/"}
-                  className="text-white decoration-none hover:text-red-500 hover:shadow-lg hover:shadow-red-400/50"
-                >
+                <Link to="/" className="text-white hover:text-red-500">
                   Home
                 </Link>
               </li>
               <li>
-                <Link
-                  to={"/feature"}
-                  className="text-white decoration-none hover:text-red-500 hover:shadow-lg hover:shadow-red-400/50"
-                >
+                <Link to="/feature" className="text-white hover:text-red-500">
                   Features
                 </Link>
               </li>
               <li>
-                <Link
-                  to={""}
-                  className="text-white decoration-none mr-1.5 hover:text-red-500 hover:shadow-lg hover:shadow-red-400/50"
-                >
+                <Link to="/" className="text-white hover:text-red-500">
                   Upcoming
                 </Link>
               </li>
             </ul>
           </div>
-          <div>
+
+          {/* Search - Desktop */}
+          <div className="hidden md:block">
             <Search sx={{ borderRadius: "20px", maxWidth: "400px" }}>
               <SearchIconWrapper>
                 <SearchIcon />
               </SearchIconWrapper>
               <StyledInputBase
                 placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
                 value={searchTerm}
-                onChange={(event) => setsearchTerm(event.target.value)}
+                onChange={(e) => setsearchTerm(e.target.value)}
                 onKeyDown={handleSearchSubmit}
               />
             </Search>
           </div>
+
+          {/* Menu Button - Mobile */}
+          <div className="md:hidden">
+            <button onClick={() => setOpenMenu(!openMenu)}>
+              <MenuIcon className="text-white" />
+            </button>
+          </div>
         </Toolbar>
+
+        {/* Mobile Menu (نفس التصميم) */}
+        {openMenu && (
+          <div className="md:hidden px-4 pb-4">
+            <ul className="flex flex-col gap-4">
+              <li>
+                <Link
+                  to="/"
+                  className="text-white hover:text-red-500"
+                  onClick={() => setOpenMenu(false)}
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/feature"
+                  className="text-white hover:text-red-500"
+                  onClick={() => setOpenMenu(false)}
+                >
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/"
+                  className="text-white hover:text-red-500"
+                  onClick={() => setOpenMenu(false)}
+                >
+                  Upcoming
+                </Link>
+              </li>
+            </ul>
+
+            {/* نفس السيرش بالظبط */}
+            <div className="mt-4">
+              <Search sx={{ borderRadius: "20px", maxWidth: "400px" }}>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  value={searchTerm}
+                  onChange={(e) => setsearchTerm(e.target.value)}
+                  onKeyDown={handleSearchSubmit}
+                />
+              </Search>
+            </div>
+          </div>
+        )}
       </AppBar>
     </Box>
   );
